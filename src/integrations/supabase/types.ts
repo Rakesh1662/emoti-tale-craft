@@ -14,7 +14,104 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      stories: {
+        Row: {
+          content: Json
+          created_at: string
+          emotion_data: Json | null
+          genre: string
+          id: string
+          is_completed: boolean | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: Json
+          created_at?: string
+          emotion_data?: Json | null
+          genre: string
+          id?: string
+          is_completed?: boolean | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: Json
+          created_at?: string
+          emotion_data?: Json | null
+          genre?: string
+          id?: string
+          is_completed?: boolean | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      story_progress: {
+        Row: {
+          choices_made: Json | null
+          current_chapter: number | null
+          emotional_state: Json | null
+          id: string
+          last_interaction: string | null
+          story_id: string
+          user_id: string
+        }
+        Insert: {
+          choices_made?: Json | null
+          current_chapter?: number | null
+          emotional_state?: Json | null
+          id?: string
+          last_interaction?: string | null
+          story_id: string
+          user_id: string
+        }
+        Update: {
+          choices_made?: Json | null
+          current_chapter?: number | null
+          emotional_state?: Json | null
+          id?: string
+          last_interaction?: string | null
+          story_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "story_progress_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
