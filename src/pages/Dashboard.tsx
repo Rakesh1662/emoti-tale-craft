@@ -94,7 +94,11 @@ const Dashboard = () => {
             <Button
               variant="outline"
               size="sm"
-              className="border-border/50 hover:bg-secondary/50"
+              onClick={() => {
+                // TODO: Navigate to profile page or open profile modal
+                console.log('Profile clicked!');
+              }}
+              className="border-border/50 hover:bg-secondary/50 hover:shadow-story hover:scale-105 transition-all duration-300"
             >
               <User className="h-4 w-4 mr-2" />
               Profile
@@ -103,7 +107,7 @@ const Dashboard = () => {
               variant="outline"
               size="sm"
               onClick={signOut}
-              className="border-border/50 hover:bg-secondary/50"
+              className="border-border/50 hover:bg-secondary/50 hover:shadow-story hover:scale-105 transition-all duration-300"
             >
               <LogOut className="h-4 w-4 mr-2" />
               Sign Out
