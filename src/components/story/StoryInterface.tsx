@@ -90,16 +90,13 @@ export const StoryInterface: React.FC<StoryInterfaceProps> = ({ genre, onBack })
 
     setIsAnalyzing(true);
     try {
-      const response = await fetch('/api/analyze-emotion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
+      const { data, error } = await supabase.functions.invoke('analyze-emotion', {
+        body: { text }
       });
 
-      if (!response.ok) throw new Error('Failed to analyze emotion');
-
-      const data = await response.json();
+      if (error) throw new Error('Failed to analyze emotion');
       return data.emotion;
+
     } catch (error) {
       console.error('Emotion analysis error:', error);
       return null;
@@ -121,21 +118,17 @@ export const StoryInterface: React.FC<StoryInterfaceProps> = ({ genre, onBack })
       }
 
       // Generate story content
-      const response = await fetch('/api/generate-story', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('generate-story', {
+        body: {
           genre,
           chapters: chapters.map(c => ({ content: c.content, userInput: c.userInput })),
           userInput,
           emotionData,
           isInitial
-        })
+        }
       });
 
-      if (!response.ok) throw new Error('Failed to generate story');
-
-      const data = await response.json();
+      if (error) throw new Error('Failed to generate story');
       
       const newChapter: StoryChapter = {
         id: chapters.length + 1,
