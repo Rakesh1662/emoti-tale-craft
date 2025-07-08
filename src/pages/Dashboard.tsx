@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { StoryGenres } from '@/components/story/StoryGenres';
 import { StoryInterface } from '@/components/story/StoryInterface';
+import Profile from './Profile';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,7 +18,7 @@ interface UserStory {
 
 const Dashboard = () => {
   const { user, signOut } = useAuth();
-  const [currentView, setCurrentView] = useState<'genres' | 'story'>('genres');
+  const [currentView, setCurrentView] = useState<'genres' | 'story' | 'profile'>('genres');
   const [selectedGenre, setSelectedGenre] = useState<string>('');
   const [userStories, setUserStories] = useState<UserStory[]>([]);
 
@@ -53,6 +54,14 @@ const Dashboard = () => {
     loadUserStories(); // Refresh stories when going back
   };
 
+  const handleProfileView = () => {
+    setCurrentView('profile');
+  };
+
+  const handleBackFromProfile = () => {
+    setCurrentView('genres');
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
@@ -68,6 +77,10 @@ const Dashboard = () => {
         <StoryInterface genre={selectedGenre} onBack={handleBackToGenres} />
       </div>
     );
+  }
+
+  if (currentView === 'profile') {
+    return <Profile onBack={handleBackFromProfile} />;
   }
 
   return (
@@ -94,10 +107,7 @@ const Dashboard = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={() => {
-                // TODO: Navigate to profile page or open profile modal
-                console.log('Profile clicked!');
-              }}
+              onClick={handleProfileView}
               className="border-border/50 hover:bg-secondary/50 hover:shadow-story hover:scale-105 transition-all duration-300"
             >
               <User className="h-4 w-4 mr-2" />
