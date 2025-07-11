@@ -130,12 +130,33 @@ export const StoryInterface: React.FC<StoryInterfaceProps> = ({ genre, onBack })
 
       if (error) throw new Error('Failed to generate story');
       
+      // Ensure we have proper content format
+      let storyContent = '';
+      let storyChoices: string[] = [];
+      
+      if (typeof data === 'string') {
+        // If data is a string, try to parse it as JSON first
+        try {
+          const parsed = JSON.parse(data);
+          storyContent = parsed.content || data;
+          storyChoices = parsed.choices || [];
+        } catch {
+          // If parsing fails, use the string as content
+          storyContent = data;
+          storyChoices = ["Continue the adventure", "Look around carefully", "Think about the situation"];
+        }
+      } else {
+        // If data is already an object
+        storyContent = data.content || '';
+        storyChoices = data.choices || [];
+      }
+      
       const newChapter: StoryChapter = {
         id: chapters.length + 1,
-        content: data.content,
+        content: storyContent,
         userInput,
         emotionData: emotionData || undefined,
-        choices: data.choices,
+        choices: storyChoices,
         timestamp: new Date().toISOString()
       };
 
