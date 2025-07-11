@@ -39,7 +39,7 @@ const Index = () => {
             <Button 
               variant="outline" 
               size="lg"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/dashboard')}
               className="border-border/50 hover:bg-secondary/50 text-lg px-8 py-6 transition-magical"
             >
               <BookOpen className="mr-2 h-5 w-5" />
